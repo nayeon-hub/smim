@@ -1,35 +1,54 @@
 import React from 'react';
-import Intro from './pages/Intro';
-import MainPage from './pages/MainPage';
-import SignupPage from './pages/SignupPage';
-import PostsPage from './pages/PostsPage';
-import PostViewPage from './pages/PostViewPage';
-import PostCreate from './pages/PostCreate';
-import PostEdit from './pages/PostEdit';
-import MyPage from './pages/MyPage';
-import LoadingPage from './pages/LoadingPage';
-import NotFound from './pages/NotFound';
-import { Routes, Route } from 'react-router-dom';
-import NavBar from './components/common/NavBar';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+import { ReactQueryDevtools } from 'react-query/devtools';
+import { isLoginCheckToggle, loginToggle } from './redux/slice/toggleSlice';
+import PostWriteBtn from './components/post/PostWriteBtn/PostWriteBtn';
+import NavBar from './components/common/NavBar/NavBar';
+import AppRoute from './routes/AppRoute';
+import Modal from './components/common/Modal/Modal';
+import LoginSection from './components/login/LoginSection/LoginSection';
+import Auth from './components/common/Auth/Auth';
 
-function App({ loginId }) {
+function App() {
+  const { authenticated } = useSelector((state) => state.authToken);
+  const { isLoginCheckToggled, loginToggled } = useSelector(
+    (state) => ({
+      isLoginCheckToggled: state.toggle.isLoginCheckToggled,
+      loginToggled: state.toggle.loginToggled,
+    }),
+    shallowEqual
+  );
+  const { pathname } = useLocation();
+  const dispatch = useDispatch();
+  const pathCheck = pathname.split('/')[2];
+
+  const actionFunc = () => {
+    dispatch(isLoginCheckToggle());
+    dispatch(loginToggle());
+  };
+
+  const cancelFunc = () => {
+    dispatch(isLoginCheckToggle());
+  };
+
   return (
     <>
+      {isLoginCheckToggled && (
+        <Modal actionfunc={actionFunc} cancelFunc={cancelFunc}>
+          {'로그인이 필요한 기능입니다.\n로그인하시겠습니까?'}
+        </Modal>
+      )}
       <NavBar />
-      <Routes>
-        <Route path='/intro' element={<Intro loginId={loginId} />} />
-        <Route path='/signup' element={<SignupPage loginId={loginId} />} />
-        <Route path='/' element={<MainPage loginId={loginId} />} />
-        <Route path='/generation?age=:age' element={<PostsPage loginId={loginId} />} />
-        <Route path='/posts/view/:id' element={<PostViewPage loginId={loginId} />} />
-        <Route path='/posts/create' element={<PostCreate loginId={loginId} />} />
-        <Route path='/posts/edit/:id' element={<PostEdit loginId={loginId} />} />
-        <Route path='/my' element={<MyPage loginId={loginId} />} />
-        <Route path='/loading' element={<LoadingPage loginId={loginId} />} />
-        <Route path='/notfound' element={<NotFound loginId={loginId} />} />
-      </Routes>
+      <Auth />
+      {loginToggled && <LoginSection />}
+      {authenticated && pathCheck !== 'create' && pathCheck !== 'edit' && <PostWriteBtn />}
+      <AppRoute />
+      <ReactQueryDevtools initialIsOpen={true} />
     </>
   );
 }
 
 export default App;
+
+// 추후에 Oauth로 로그인을 하였을 시에 유저 정보나 비밀번호 변경 페이지로 가지 못하도록 설정해야 된다.

@@ -1,8 +1,10 @@
-import express from 'express';
-
-const app = express();
-
-app.get('/', (req, res) => res.send('Hello'));
+import 'dotenv/config';
+import './db.js';
+import './models/Comment.js';
+import './models/Like.js';
+import './models/Post.js';
+import './models/User.js';
+import app from './server.js';
 
 const PORT = 4000;
 

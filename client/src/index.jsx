@@ -1,25 +1,38 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { QueryClient, QueryClientProvider } from 'react-query';
 import App from "./App";
+import GlobalStyle from "./styles/globalstyles";
 import reportWebVitals from "./reportWebVitals";
-import store from "./redux/store";
-import { Provider } from "react-redux";
+
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { theme } from "./styles/theme";
-import GlobalStyle from "./styles/globalstyles";
+
+import store from "./redux/store";
+import { Provider } from "react-redux";
+import { persistStore } from 'redux-persist';
+import { PersistGate } from 'redux-persist/integration/react';
+
+const persistor = persistStore(store);
+const queryClient = new QueryClient();
+
 
 ReactDOM.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
-        <ThemeProvider theme={theme}>
-          <GlobalStyle />
-          <App />
-        </ThemeProvider>
-      </BrowserRouter>
-    </Provider>
-  </React.StrictMode>,
+      <PersistGate loading={null} persistor={persistor}>
+        <QueryClientProvider client={queryClient}>
+          <BrowserRouter>
+            <ThemeProvider theme={theme}>
+              <GlobalStyle />
+              <App />
+            </ThemeProvider>
+          </BrowserRouter>
+        </QueryClientProvider>
+      </PersistGate>
+    </Provider>,
+  // </React.StrictMode>,
   document.getElementById("root")
 );
 

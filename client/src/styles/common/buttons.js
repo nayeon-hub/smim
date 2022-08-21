@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 
 export const BorderBtn = styled.button`
@@ -26,5 +27,39 @@ export const ColorBtn = styled.button`
     background: none;
     color: ${({ palette, theme }) => (palette ? theme.color[palette] : theme.color['black'])};
     cursor: pointer;
+  }
+`;
+
+export const UpdateBtn = React.memo(styled(ColorBtn)`
+  width: 100px;
+  height: 50px;
+  background-color: orange;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  margin-right: 20px;
+  align-self: flex-end;
+`);
+
+export const ChangePwBtn = styled(ColorBtn)`
+  width: 70%;
+  height: 50px;
+  background-color: orange;
+  font-size: 18px;
+  border-radius: 5px;
+  &:hover {
+    font-weight: bold;
+  }
+`;
+
+export const CancelBtn = styled(ColorBtn)`
+  width: 70%;
+  height: 50px;
+  background-color: white;
+  font-size: 18px;
+  color: black;
+  border-radius: 5px;
+  &:hover {
+    font-weight: bold;
   }
 `;
