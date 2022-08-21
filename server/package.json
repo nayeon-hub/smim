@@ -26,8 +26,9 @@
     "web-vitals": "^2.1.3"
   },
   "scripts": {
+    "dev:start": "nodemon ./src/index.js",
     "start": "node build/index.js",
-    "build:server": "babel ./index.js -d build",
+    "build:server": "babel src --out-dir build --copy-files",
     "eject": "react-scripts eject"
   },
   "devDependencies": {

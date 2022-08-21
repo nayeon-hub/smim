@@ -1,17 +1,25 @@
 "use strict";
 
-var _express = _interopRequireDefault(require("express"));
+require("dotenv/config");
+
+require("./db.js");
+
+require("./models/Comment.js");
+
+require("./models/Like.js");
+
+require("./models/Post.js");
+
+require("./models/User.js");
+
+var _server = _interopRequireDefault(require("./server.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var app = (0, _express["default"])();
-app.get('/', function (req, res) {
-  return res.send('Hello');
-});
 var PORT = 4000;
 
 var handleListening = function handleListening() {
   return console.log("\u2705 server Listening on port http://localhost:".concat(PORT, " \uD83D\uDE80"));
 };
 
-app.listen(PORT, handleListening);
+_server["default"].listen(PORT, handleListening);
