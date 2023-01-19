@@ -14,7 +14,7 @@ function PostCreatePage() {
   const pathValue = pathArr[2];
   const postId = pathArr[3];
 
-  useGetToken();
+  useGetToken(); // 숨겨도 될 내용인가? Yes
 
   const loadPost = async () => {
     try {
