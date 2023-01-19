@@ -45,13 +45,6 @@ function CreateForm({ postData, pathValue, postId }: PostCreateFormProps) {
   // );
 
   useEffect(() => {
-    setValue('title', '');
-    setValue('para', { para: '', img: [] });
-    setValue('age', '');
-    setValue('tagArray', []);
-  }, [setValue]);
-
-  useEffect(() => {
     if (postData) {
       const { title, content, targetAge, hashtag } = postData;
       const myRegExp1 = /https:(.*?)(png|jpg|jpeg)/gi;
