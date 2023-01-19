@@ -41,13 +41,14 @@ function Modals({ postId, pathValue, watch, getValues, setView }: ModalsProps) {
       .catch((err: any) => console.log(err));
   };
 
-  const uploadActionFunc = () => {
+  const postUploadModalAction = () => {
     setView(false);
     uploadPost(accessToken);
     dispatch(postToggle());
   };
 
-  const postCancelActionFunc = useCallback(() => {
+  const postCancelModalAction = useCallback(() => {
+    // handleUploadBtnClick
     setView(false);
     const delData = getValues('para');
     deletePostImg(delData, accessToken);
@@ -55,23 +56,25 @@ function Modals({ postId, pathValue, watch, getValues, setView }: ModalsProps) {
     navigate(-1);
   }, [dispatch, navigate, getValues, accessToken, setView]);
 
-  const postCancelCancelFunc = () => {
+  const postCancelModalClose = () => {
+    // handleCancleBtnClick
     dispatch(modalToggle());
   };
 
-  const uploadCancelFunc = useCallback(() => {
+  const postUploadModalClose = () => {
+    // handleCancleBtnClick
     dispatch(postToggle());
-  }, [dispatch]);
+  };
 
   return (
     <>
       {postToggled && (
-        <Modal actionFunc={uploadActionFunc} cancelFunc={uploadCancelFunc}>
+        <Modal actionFunc={postUploadModalAction} cancelFunc={postUploadModalClose}>
           {pathValue === 'create' ? '게시물을 등록하겠습니까?' : ' 게시물을 수정하겠습니까?'}
         </Modal>
       )}
       {modalToggled && (
-        <Modal actionFunc={postCancelActionFunc} cancelFunc={postCancelCancelFunc}>
+        <Modal actionFunc={postCancelModalAction} cancelFunc={postCancelModalClose}>
           {'게시물을 취소하시겠습니까? \n 작성한 내용은 저장되지 않습니다.'}
         </Modal>
       )}
